@@ -23,10 +23,17 @@ public class Publisher {
 
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(Map.of("repo_id", repoId));
-        System.out.println(json);
         MessageProperties messageProperties = new MessageProperties();
         messageProperties.setContentType("application/json");
         Message message = new Message(json.getBytes(), messageProperties);
-        rabbitTemplate.send(EXTRACT_QUEUE, message);
+        Boolean result = rabbitTemplate.invoke(t -> {
+            t.send(EXTRACT_QUEUE, message);
+            t.waitForConfirmsOrDie(10_000);
+            return true;
+        }, (tag, multiple) -> {
+            System.out.println("Ack: " + tag + ":" + multiple);
+        }, (tag, multiple) -> {
+            System.out.println("Nack: " + tag + ":" + multiple);
+        });
     }
 }

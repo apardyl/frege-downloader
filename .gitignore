@@ -36,4 +36,5 @@ out/
 
 ### VS Code ###
 .vscode/
-/src/main/resources/fortesting.json
+/src/main/resources/example.json
+/src/main/resources/temp

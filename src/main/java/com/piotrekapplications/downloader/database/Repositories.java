@@ -3,9 +3,11 @@ package com.piotrekapplications.downloader.database;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
+@Table(name="repositories")
 public class Repositories {
     @Id
     @Column(name="repo_id")
